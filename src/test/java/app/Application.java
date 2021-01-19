@@ -12,7 +12,7 @@ import tests.TestBase;
 
 import java.util.Set;
 
-public class Application extends TestBase {
+public class Application  {
 
     private WebDriver driver;
 

@@ -35,7 +35,7 @@ public class TestBase {
         // caps.setCapability("unexpectedAlertBehaviour", "dismiss");
 
         //driver constructor
-     driver = new ChromeDriver(caps);
+        //driver = new ChromeDriver(caps);
 
         // Edge browser run
        /* System.setProperty("webdriver.edge.driver", "C:\\SeleniumDrivers\\msedgedriver.exe");
@@ -60,6 +60,7 @@ public class TestBase {
 
 
 
+/*
 
         //wait timeout
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -72,6 +73,7 @@ public class TestBase {
 
 
         wait = new WebDriverWait(driver, 10);
+*/
 
         //Shutdown the browser. Replacement for TestNG AfterAll.
       // Runtime.getRuntime().addShutdownHook(new Thread(() -> { driver.quit(); driver = null; }));
