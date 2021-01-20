@@ -9,21 +9,21 @@ import pages.CustomerListPage;
 import pages.RegistrationPage;
 import testData.Customer;
 import tests.TestBase;
+import utils.WindowManager;
 
 
 import java.util.Set;
 
-public class Application  {
+public class Application {
 
     private WebDriver driver;
-
-
 
 
     private RegistrationPage registrationPage;
     private AdminPanelLoginPage adminPanelLoginPage;
     private CustomerListPage customerListPage;
     private CountriesPage countriesPage;
+    private WindowManager windowManager;
 
     public Application() {
 
@@ -32,6 +32,7 @@ public class Application  {
         adminPanelLoginPage = new AdminPanelLoginPage(driver);
         customerListPage = new CustomerListPage(driver);
         countriesPage = new CountriesPage(driver);
+        windowManager = new WindowManager(driver);
     }
 
     public void quit() {
@@ -68,8 +69,6 @@ public class Application  {
     }
 
 
-
-
     public void openCountryEditMode() {
         countriesPage.open();
         countriesPage.firstCountry.click();
@@ -77,17 +76,28 @@ public class Application  {
 
 
 
-
-    public void checkExternalLinks(){
+    public void checkExternalLinks() {
 
         countriesPage.externalLinks.forEach((link) -> {
+
+            //get Handle of the current window
+            String originalWindowHandle = windowManager.getCurrentWindowHandle();
+            //get Handle of all opened windows
+            Set<String> existingWindowsHandles = windowManager.getExistingWindowsHandles();
+            //open external link
             link.click();
+            //switch To a new window (a window that is missing in existing Windows Set)
+            windowManager.switchToWindowOtherThanExisting(existingWindowsHandles);
+            // close Window
+            windowManager.closeWindow();
+            //navigate to original Window by Handle
+            windowManager.navigateToWindow(originalWindowHandle);
+
+
         });
-}
 
 
-
-
+    }
 
 
 }
