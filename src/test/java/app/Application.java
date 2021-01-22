@@ -1,17 +1,17 @@
 package app;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import pages.AdminPanelLoginPage;
-import pages.CountriesPage;
-import pages.CustomerListPage;
-import pages.RegistrationPage;
+import pages.*;
 import testData.Customer;
 import tests.TestBase;
 import utils.WindowManager;
 
 
+import java.util.List;
 import java.util.Set;
 
 public class Application {
@@ -24,6 +24,7 @@ public class Application {
     private CustomerListPage customerListPage;
     private CountriesPage countriesPage;
     private WindowManager windowManager;
+    private CatalogPage catalogPage;
 
     public Application() {
 
@@ -33,7 +34,11 @@ public class Application {
         customerListPage = new CustomerListPage(driver);
         countriesPage = new CountriesPage(driver);
         windowManager = new WindowManager(driver);
+        catalogPage = new CatalogPage(driver);
     }
+
+
+    List <WebElement> products1;
 
     public void quit() {
         driver.quit();
@@ -98,6 +103,47 @@ public class Application {
 
 
     }
+
+    public void checkProducts(){
+
+        catalogPage.openCatalogPage();
+
+        products1 = driver.findElements(catalogPage.product);
+        for (int i = 0; i < products1.size(); i++) {
+            products1.get(i).click();
+            driver.navigate().back();
+            products1 = driver.findElements(catalogPage.product);
+
+        }
+
+
+
+      /*  List<WebElement> nestedLinks =driver.findElements(nestedLink);
+        for (int j = 0; j < nestedLinks.size(); j++)  {
+            nestedLinks.get(j).click();
+            driver.findElement(title).isDisplayed();
+            nestedLinks =driver.findElements(nestedLink);
+
+        }*/
+
+
+
+
+        /*
+        for(WebElement product : products1){
+            product.click();
+            driver.navigate().back();
+            products1 = driver.findElements(catalogPage.product);
+             }*/
+
+
+
+
+
+    }
+
+
+
 
 
 }
