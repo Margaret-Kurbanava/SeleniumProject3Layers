@@ -4,19 +4,24 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.*;
 import testData.Customer;
 import tests.TestBase;
+import utils.MyListener;
 import utils.WindowManager;
 
 
 import java.util.List;
 import java.util.Set;
 
+import static org.testng.Assert.assertEquals;
+
 public class Application {
 
-    private WebDriver driver;
+    private EventFiringWebDriver driver;
 
 
     private RegistrationPage registrationPage;
@@ -28,7 +33,9 @@ public class Application {
 
     public Application() {
 
-        driver = new ChromeDriver();
+        driver = new EventFiringWebDriver(new ChromeDriver());
+        driver.register(new MyListener());
+       // driver = new ChromeDriver();
         registrationPage = new RegistrationPage(driver);
         adminPanelLoginPage = new AdminPanelLoginPage(driver);
         customerListPage = new CustomerListPage(driver);
@@ -104,14 +111,32 @@ public class Application {
 
     }
 
+
     public void checkProducts(){
 
         catalogPage.openCatalogPage();
 
+        //go through products
         products1 = driver.findElements(catalogPage.product);
         for (int i = 0; i < products1.size(); i++) {
+
             products1.get(i).click();
+
+            //get browser logs
+            List<LogEntry> logs = driver.manage().logs().get("browser").getAll();
+
+            //fail test if there is something in browser logs
+            assertEquals(logs.size(), 0);
+
+
+            //print log
+            for (LogEntry l : logs) {
+                System.out.println(l);
+            }
+
+            //navigate back
             driver.navigate().back();
+            //refresh the list
             products1 = driver.findElements(catalogPage.product);
 
         }
